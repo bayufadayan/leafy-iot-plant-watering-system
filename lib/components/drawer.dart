@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iot_app/about_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -62,6 +63,22 @@ class MyDrawer extends StatelessWidget {
                     'Tentang Kami',
                     style: TextStyle(fontSize: 16.0),
                   ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const AboutScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    FontAwesomeIcons.chartArea,
+                    color: Colors.green,
+                  ),
+                  title: const Text(
+                    'Statistik',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
                   onTap: () {},
                 ),
                 ListTile(
@@ -71,6 +88,17 @@ class MyDrawer extends StatelessWidget {
                   ),
                   title: const Text(
                     'Download Data',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: const Icon(
+                    FontAwesomeIcons.toolbox,
+                    color: Colors.green,
+                  ),
+                  title: const Text(
+                    'Tentang Alat',
                     style: TextStyle(fontSize: 16.0),
                   ),
                   onTap: () {},
@@ -85,7 +113,7 @@ class MyDrawer extends StatelessWidget {
             width: double.infinity,
             color: Colors.green.shade100,
             child: const Text(
-              '© 2024 My App',
+              '© 2024 Leafy IOT',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14.0, color: Colors.green),
             ),
