@@ -7,6 +7,7 @@ class MyCard extends StatefulWidget {
   final String title;
   final Color headerColor;
   final Color valueColor;
+  final String unit;
 
   // Constructor
   const MyCard({
@@ -16,6 +17,7 @@ class MyCard extends StatefulWidget {
     required this.title,
     required this.headerColor,
     required this.valueColor,
+    required this.unit,
   });
 
   @override
@@ -77,7 +79,7 @@ class _MyCardState extends State<MyCard> {
                     ),
                   ),
                   Text(
-                    "Celcius",
+                    widget.unit,
                     style: GoogleFonts.quicksand(
                       fontWeight: FontWeight.w600,
                       fontSize: 14.0,

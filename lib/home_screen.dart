@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iot_app/components/card.dart';
+import 'package:iot_app/components/drawer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,9 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
     FontAwesomeIcons.droplet
   ];
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const MyDrawer(),
       backgroundColor: const Color.fromARGB(255, 239, 250, 225),
       body: SafeArea(
           child: Padding(
@@ -36,11 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     colors: [Color(0xFF006769), Color(0xFF40A578)],
                     tileMode: TileMode.mirror,
                   ).createShader(bounds),
-                  child: const Icon(
-                    FontAwesomeIcons.bars,
-                    size: 18.0,
-                    color: Colors
-                        .white, // The color here is ignored due to ShaderMask
+                  child: GestureDetector(
+                    onTap: () => _scaffoldKey.currentState?.openDrawer(),
+                    child: const Icon(
+                      FontAwesomeIcons.bars,
+                      size: 18.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 ShaderMask(
@@ -48,13 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     colors: [Color(0xFF006769), Color(0xFF40A578)],
                     tileMode: TileMode.mirror,
                   ).createShader(bounds),
-                  child: const Padding(
-                    padding: EdgeInsets.only(right: 5.0),
-                    child: Icon(
-                      FontAwesomeIcons.volumeHigh,
-                      size: 18.0,
-                      color: Colors
-                          .white, // The color here is ignored due to ShaderMask
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: const Icon(
+                        FontAwesomeIcons.volumeHigh,
+                        size: 18.0,
+                        color: Colors
+                            .white, // The color here is ignored due to ShaderMask
+                      ),
                     ),
                   ),
                 ),
@@ -151,22 +161,30 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 175,
               child: Expanded(
-                child: GridView.builder(
+                child: GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
                   ),
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return MyCard(
-                      value: '${index + 1}',
+                  children: const <Widget>[
+                    MyCard(
+                      value: '23.43',
+                      icon: FontAwesomeIcons.temperatureHalf,
+                      title: 'Suhu',
+                      headerColor: Color(0xFF006769),
+                      valueColor: Colors.black,
+                      unit: "Celsius",
+                    ),
+                    MyCard(
+                      value: '72.31',
                       icon: FontAwesomeIcons.droplet,
                       title: 'Kelembaban',
-                      headerColor: const Color(0xFF006769),
+                      headerColor: Color(0xFF006769),
                       valueColor: Colors.black,
-                    );
-                  },
+                      unit: "Percent",
+                    ),
+                  ],
                 ),
               ),
             ),
