@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -41,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               'Siram Tanaman, Hijaukan Harapan',
               style: TextStyle(
                 color: Color(0xFF00643C),
