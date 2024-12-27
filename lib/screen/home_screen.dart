@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iot_app/about_screen.dart';
+import 'package:iot_app/screen/about_screen.dart';
 import 'package:iot_app/components/card.dart';
 import 'package:iot_app/components/drawer.dart';
 import 'package:iot_app/components/stats_card.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final DraggableScrollableController _draggableController =
       DraggableScrollableController();
+  final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref();
+
   bool isExpanded = false;
+  bool pumpStatus = false;
+  double humidity = 0.0;
+  double soilMoisture = 0.0;
+  double temperature = 0.0;
 
   @override
   void initState() {
@@ -34,6 +41,31 @@ class _HomeScreenState extends State<HomeScreen> {
     _draggableController.addListener(() {
       setState(() {
         isExpanded = _draggableController.size >= 0.6;
+      });
+    });
+
+    // Mendengarkan perubahan data di Firebase secara real-time
+    _databaseRef.child('control/pumpStatus').onValue.listen((event) {
+      setState(() {
+        pumpStatus = event.snapshot.value as bool;
+      });
+    });
+
+    _databaseRef.child('sensor/humidity').onValue.listen((event) {
+      setState(() {
+        humidity = event.snapshot.value as double;
+      });
+    });
+
+    _databaseRef.child('sensor/soilMoisture').onValue.listen((event) {
+      setState(() {
+        soilMoisture = event.snapshot.value as double;
+      });
+    });
+
+    _databaseRef.child('sensor/temperature').onValue.listen((event) {
+      setState(() {
+        temperature = event.snapshot.value as double;
       });
     });
   }
@@ -147,16 +179,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           CircularPercentIndicator(
                             radius: 150.0,
                             lineWidth: 10.0,
-                            percent: 0.75,
+                            percent: soilMoisture / 100,
                             animation: true,
                             animationDuration: 500,
                             circularStrokeCap: CircularStrokeCap.round,
                             backgroundColor: Colors.grey[200]!,
-                            linearGradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF40A578),
-                                Color(0xFFC8FF7B),
-                              ], // Warna gradient
+                            linearGradient: LinearGradient(
+                              colors: soilMoisture <= 20
+                                  ? [
+                                      const Color(0xFF8B4513),
+                                      const Color(0xFFD2B48C),
+                                    ]
+                                  : soilMoisture <= 40
+                                      ? [
+                                          const Color(0xFF40A578),
+                                          const Color(0xFFC8FF7B),
+                                        ]
+                                      : [
+                                          const Color(0xFF4080A5),
+                                          const Color(0xFF8FCBFF),
+                                        ],
                               begin: Alignment.topRight,
                               end: Alignment.bottomLeft,
                             ),
@@ -172,35 +214,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: GoogleFonts.quicksand(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 20.0,
-                                          color: const Color(0xFF40A578),
+                                          color: soilMoisture <= 20
+                                              ? const Color(0xFF8B4513)
+                                              : soilMoisture <= 40
+                                                  ? const Color(0xFF40A578)
+                                                  : const Color(0xFF4080A5),
                                         ),
                                       ),
                                       TextSpan(
-                                        text: 'Tanah', // Teks "Tanah"
+                                        text: 'Tanah',
                                         style: GoogleFonts.quicksand(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 20.0,
-                                          color: const Color(0xFF40A578),
+                                          color: soilMoisture <= 20
+                                              ? const Color(0xFF8B4513)
+                                              : soilMoisture <= 40
+                                                  ? const Color(0xFF40A578)
+                                                  : const Color(0xFF4080A5),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Text(
-                                  "75",
+                                  '${soilMoisture.toString()}%',
                                   style: GoogleFonts.quicksand(
                                     fontWeight: FontWeight.w700, // Medium
                                     fontSize: 96.0,
-                                    color: const Color(0xFF40A578),
+                                    color: soilMoisture <= 20
+                                        ? const Color(0xFF8B4513)
+                                        : soilMoisture <= 40
+                                            ? const Color(0xFF40A578)
+                                            : const Color(0xFF4080A5),
                                   ),
                                 ),
-                                Text(
-                                  "Percent",
-                                  style: GoogleFonts.quicksand(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18.0,
-                                    color: const Color(0xFF40A578),
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Status Tanah",
+                                      style: GoogleFonts.quicksand(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      soilMoisture <= 20
+                                          ? "Kering"
+                                          : soilMoisture <= 40
+                                              ? "Cukup"
+                                              : "Basah",
+                                      style: GoogleFonts.quicksand(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12.0,
+                                        color: soilMoisture <= 20
+                                            ? const Color(0xFF8B4513)
+                                            : soilMoisture <= 40
+                                                ? const Color(0xFF40A578)
+                                                : const Color(0xFF4080A5),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ],
                             ),
@@ -219,20 +294,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisSpacing: 8.0,
                           mainAxisSpacing: 8.0,
                         ),
-                        children: const <Widget>[
+                        children: <Widget>[
                           MyCard(
-                            value: '23.43',
+                            value: temperature.toString(),
                             icon: FontAwesomeIcons.temperatureHalf,
                             title: 'Suhu',
-                            headerColor: Color(0xFF006769),
+                            headerColor: const Color(0xFF006769),
                             valueColor: Colors.black,
                             unit: "Celsius",
                           ),
                           MyCard(
-                            value: '72.31',
+                            value: humidity.toString(),
                             icon: FontAwesomeIcons.droplet,
                             title: 'Kelembaban',
-                            headerColor: Color(0xFF006769),
+                            headerColor: const Color(0xFF006769),
                             valueColor: Colors.black,
                             unit: "Percent",
                           ),

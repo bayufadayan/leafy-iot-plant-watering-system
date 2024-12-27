@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iot_app/about_screen.dart';
+import 'package:iot_app/screen/about_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

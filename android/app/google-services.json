@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "32443741838",
+    "firebase_url": "https://iot-app-leafy-1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iot-app-leafy-1",
+    "storage_bucket": "iot-app-leafy-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32443741838:android:034e792b5c854ab84bbbdf",
+        "android_client_info": {
+          "package_name": "com.example.iot_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRz-YYXBabicoXjdxCfHETiezwNGnmYsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
