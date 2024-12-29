@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int soilMoisture = 0;
   double humidity = 0.0;
   double temperature = 0.0;
+  bool isBottomSheetAppear = false;
 
   @override
   void initState() {
@@ -35,13 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isExpanded = _draggableController.size >= 0.6;
       });
+
+      double currentPosition = _draggableController.size;
+      if (currentPosition <= 0.15) {
+        statisticToggle();
+      }
     });
 
-    // _databaseReference.child('control/pumpStatus').onValue.listen((event) {
-    //   setState(() {
-    //     pumpStatus = event.snapshot.value as bool;
-    //   });
-    // });
+    _databaseReference.child('control/pumpStatus').onValue.listen((event) {
+      setState(() {
+        if (event.snapshot.value != null) {
+          pumpStatus = event.snapshot.value as bool;
+        } else {
+          pumpStatus = false;
+        }
+      });
+    });
 
     _databaseReference.child('sensor/soilMoisture').onValue.listen((event) {
       setState(() {
@@ -72,6 +82,17 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
+  }
+
+  void statisticToggle() {
+    isBottomSheetAppear = !isBottomSheetAppear;
+  }
+
+  @override
+  void dispose() {
+    _draggableController
+        .removeListener(() {});
+    super.dispose();
   }
 
   @override
@@ -325,137 +346,179 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
+                        child: GestureDetector(
+                          onTapDown: (details) async {
+                            await _databaseReference
+                                .child('control/pumpStatus')
+                                .set(true);
+                          },
+                          onTapUp: (details) async {
+                            await _databaseReference
+                                .child('control/pumpStatus')
+                                .set(false);
+                          },
+                          onTapCancel: () async {
+                            await _databaseReference
+                                .child('control/pumpStatus')
+                                .set(false);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: pumpStatus
+                                  ? const Color.fromARGB(255, 97, 97, 97)
+                                  : const Color(0xFF006769),
                               borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: pumpStatus
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        offset: const Offset(0, 2),
+                                        blurRadius: 4.0,
+                                      ),
+                                    ]
+                                  : [],
                             ),
-                            backgroundColor: const Color(0xFF006769),
-                            minimumSize: const Size.fromHeight(60),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 24.0),
-                          ),
-                          child: Text(
-                            "Tekan untuk Menyiram",
-                            style: GoogleFonts.quicksand(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20.0,
-                              color: Colors.white,
+                            height: 60,
+                            alignment: Alignment.center,
+                            child: Text(
+                              pumpStatus
+                                  ? "Sedang Menyiram..."
+                                  : "Tekan untuk Menyiram",
+                              style: GoogleFonts.quicksand(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20.0,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          statisticToggle();
+                        });
+                      },
+                      child: Text(
+                        'Lihat Statistik',
+                        style: GoogleFonts.quicksand(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: const Color(0xFF006769)),
+                      )),
                 ],
               ),
             ),
           ),
-          DraggableScrollableSheet(
-            controller: _draggableController,
-            initialChildSize: 0.23,
-            minChildSize: 0.23,
-            maxChildSize: 0.8,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 15,
-                      offset: const Offset(0, -5),
+          if (isBottomSheetAppear)
+            DraggableScrollableSheet(
+              controller: _draggableController,
+              initialChildSize: 0.23,
+              minChildSize: 0,
+              maxChildSize: 0.8,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
                     ),
-                  ],
-                ),
-                child: Stack(
-                  children: [
-                    ListView(
-                        controller: scrollController,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        children: [
-                          Center(
-                            child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isExpanded = !isExpanded;
-                                });
-                                _draggableController.animateTo(
-                                  isExpanded ? 0.8 : 0.23,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              icon: AnimatedRotation(
-                                turns: isExpanded ? 0.5 : 0.0,
-                                duration: const Duration(milliseconds: 300),
-                                child: const Icon(
-                                  FontAwesomeIcons.angleUp,
-                                  size: 20.0,
-                                  color: Colors.black54,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 15,
+                        offset: const Offset(0, -5),
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      ListView(
+                          controller: scrollController,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          children: [
+                            Center(
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isExpanded = !isExpanded;
+                                  });
+                                  _draggableController.animateTo(
+                                    isExpanded ? 0.8 : 0.23,
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.decelerate,
+                                  );
+                                },
+                                icon: AnimatedRotation(
+                                  turns: isExpanded ? 0.5 : 0.0,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: const Icon(
+                                    FontAwesomeIcons.angleUp,
+                                    size: 20.0,
+                                    color: Colors.black54,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const MyStatsCard(
-                            metricTitle: "Kelembaban Tanah",
-                            sensorName: "Soil Moisture Sensor",
-                            colorTitle: Color(0xFF693500),
-                            statsIllustration: 'images/chart 1.png',
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const MyStatsCard(
-                            metricTitle: "Suhu",
-                            sensorName: "DHT22 Suhu",
-                            colorTitle: Color(0xFF2C3193),
-                            statsIllustration: 'images/chart 2.png',
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const MyStatsCard(
-                            metricTitle: "Kelembaban Udara",
-                            sensorName: "DHT22 Kelembaban",
-                            colorTitle: Color(0xFF006769),
-                            statsIllustration: 'images/chart 3.png',
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          ElevatedButton(
-                              onPressed: () => _draggableController.animateTo(
-                                    0,
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeInOut,
+                            const MyStatsCard(
+                              metricTitle: "Kelembaban Tanah",
+                              sensorName: "Soil Moisture Sensor",
+                              colorTitle: Color(0xFF693500),
+                              statsIllustration: 'images/chart 1.png',
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            const MyStatsCard(
+                              metricTitle: "Suhu",
+                              sensorName: "DHT22 Suhu",
+                              colorTitle: Color(0xFF2C3193),
+                              statsIllustration: 'images/chart 2.png',
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            const MyStatsCard(
+                              metricTitle: "Kelembaban Udara",
+                              sensorName: "DHT22 Kelembaban",
+                              colorTitle: Color(0xFF006769),
+                              statsIllustration: 'images/chart 3.png',
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            ElevatedButton(
+                                onPressed: () => _draggableController.animateTo(
+                                      0,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      curve: Curves.decelerate,
+                                    ),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    backgroundColor: Colors.indigo,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14.0)),
+                                child: const Text(
+                                  "Tutup",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
                                   ),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  backgroundColor: Colors.indigo,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 14.0)),
-                              child: const Text(
-                                "Tutup",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                ),
-                              ))
-                        ]),
-                  ],
-                ),
-              );
-            },
-          ),
+                                ))
+                          ]),
+                    ],
+                  ),
+                );
+              },
+            ),
         ],
       ),
     );
