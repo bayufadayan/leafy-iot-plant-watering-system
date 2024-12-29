@@ -16,16 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> titleCard = ["Suhu", "Kelembaban"];
-  final List<String> valueCard = ["23.4", "73"];
-  final List<IconData> iconCard = [
-    FontAwesomeIcons.temperatureHalf,
-    FontAwesomeIcons.droplet
-  ];
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final DraggableScrollableController _draggableController =
-      DraggableScrollableController();
+  final DraggableScrollableController _draggableController = DraggableScrollableController();
   final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref();
 
   bool isExpanded = false;
@@ -44,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    // Mendengarkan perubahan data di Firebase secara real-time
     _databaseRef.child('control/pumpStatus').onValue.listen((event) {
       setState(() {
         pumpStatus = event.snapshot.value as bool;
@@ -255,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "Status Tanah",
                                       style: GoogleFonts.quicksand(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12.0,
+                                        fontSize: 14.0,
                                         color: Colors.black,
                                       ),
                                     ),
@@ -267,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               : "Basah",
                                       style: GoogleFonts.quicksand(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 12.0,
+                                        fontSize: 14.0,
                                         color: soilMoisture <= 20
                                             ? const Color(0xFF8B4513)
                                             : soilMoisture <= 40
@@ -286,33 +277,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(
                     height: 175,
-                    child: Expanded(
-                      child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8.0,
-                          mainAxisSpacing: 8.0,
-                        ),
-                        children: <Widget>[
-                          MyCard(
-                            value: temperature.toString(),
-                            icon: FontAwesomeIcons.temperatureHalf,
-                            title: 'Suhu',
-                            headerColor: const Color(0xFF006769),
-                            valueColor: Colors.black,
-                            unit: "Celsius",
-                          ),
-                          MyCard(
-                            value: humidity.toString(),
-                            icon: FontAwesomeIcons.droplet,
-                            title: 'Kelembaban',
-                            headerColor: const Color(0xFF006769),
-                            valueColor: Colors.black,
-                            unit: "Percent",
-                          ),
-                        ],
+                    child: GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
                       ),
+                      children: <Widget>[
+                        MyCard(
+                          value: temperature.toString(),
+                          icon: FontAwesomeIcons.temperatureHalf,
+                          title: 'Suhu',
+                          headerColor: const Color(0xFF006769),
+                          valueColor: Colors.black,
+                          unit: "Celsius",
+                        ),
+                        MyCard(
+                          value: humidity.toString(),
+                          icon: FontAwesomeIcons.droplet,
+                          title: 'Kelembaban',
+                          headerColor: const Color(0xFF006769),
+                          valueColor: Colors.black,
+                          unit: "Percent",
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(
