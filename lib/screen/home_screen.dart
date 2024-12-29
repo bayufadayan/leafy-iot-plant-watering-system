@@ -17,13 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final DraggableScrollableController _draggableController = DraggableScrollableController();
-  final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref();
+  final DraggableScrollableController _draggableController =
+      DraggableScrollableController();
+  final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
 
   bool isExpanded = false;
   bool pumpStatus = false;
+  int soilMoisture = 0;
   double humidity = 0.0;
-  double soilMoisture = 0.0;
   double temperature = 0.0;
 
   @override
@@ -36,27 +37,39 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    _databaseRef.child('control/pumpStatus').onValue.listen((event) {
+    // _databaseReference.child('control/pumpStatus').onValue.listen((event) {
+    //   setState(() {
+    //     pumpStatus = event.snapshot.value as bool;
+    //   });
+    // });
+
+    _databaseReference.child('sensor/soilMoisture').onValue.listen((event) {
       setState(() {
-        pumpStatus = event.snapshot.value as bool;
+        if (event.snapshot.value != null) {
+          soilMoisture = int.tryParse(event.snapshot.value.toString()) ?? 0;
+        } else {
+          soilMoisture = 0;
+        }
       });
     });
 
-    _databaseRef.child('sensor/humidity').onValue.listen((event) {
+    _databaseReference.child('sensor/humidity').onValue.listen((event) {
       setState(() {
-        humidity = event.snapshot.value as double;
+        if (event.snapshot.value != null) {
+          humidity = double.tryParse(event.snapshot.value.toString()) ?? 0.0;
+        } else {
+          humidity = 0.0;
+        }
       });
     });
 
-    _databaseRef.child('sensor/soilMoisture').onValue.listen((event) {
+    _databaseReference.child('sensor/temperature').onValue.listen((event) {
       setState(() {
-        soilMoisture = event.snapshot.value as double;
-      });
-    });
-
-    _databaseRef.child('sensor/temperature').onValue.listen((event) {
-      setState(() {
-        temperature = event.snapshot.value as double;
+        if (event.snapshot.value != null) {
+          temperature = double.tryParse(event.snapshot.value.toString()) ?? 0.0;
+        } else {
+          temperature = 0.0;
+        }
       });
     });
   }
@@ -173,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             percent: soilMoisture / 100,
                             animation: true,
                             animationDuration: 500,
+                            animateFromLastPercent: true,
                             circularStrokeCap: CircularStrokeCap.round,
                             backgroundColor: Colors.grey[200]!,
                             linearGradient: LinearGradient(
@@ -230,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Text(
                                   '${soilMoisture.toString()}%',
                                   style: GoogleFonts.quicksand(
-                                    fontWeight: FontWeight.w700, // Medium
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 96.0,
                                     color: soilMoisture <= 20
                                         ? const Color(0xFF8B4513)
