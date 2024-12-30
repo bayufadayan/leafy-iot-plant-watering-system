@@ -179,236 +179,238 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 350,
-                    child: Center(
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          SizedBox(
-                            height: 200,
-                            child: Opacity(
-                                opacity: 0.2,
-                                child: Image.asset('images/logo 1.png')),
-                          ),
-                          Container(
-                            width: 300.0,
-                            height: 300.0,
-                            decoration: const BoxDecoration(
-                              color: Colors.white60,
-                              shape: BoxShape.circle,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 350,
+                      child: Center(
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            SizedBox(
+                              height: 200,
+                              child: Opacity(
+                                  opacity: 0.2,
+                                  child: Image.asset('images/logo 1.png')),
                             ),
-                          ),
-                          CircularPercentIndicator(
-                            radius: 150.0,
-                            lineWidth: 10.0,
-                            percent: soilMoisture / 100,
-                            animation: true,
-                            animationDuration: 500,
-                            animateFromLastPercent: true,
-                            circularStrokeCap: CircularStrokeCap.round,
-                            backgroundColor: Colors.grey[200]!,
-                            linearGradient: LinearGradient(
-                              colors: soilMoisture <= 20
-                                  ? [
-                                      const Color(0xFF8B4513),
-                                      const Color(0xFFD2B48C),
-                                    ]
-                                  : soilMoisture <= 40
-                                      ? [
-                                          const Color(0xFF40A578),
-                                          const Color(0xFFC8FF7B),
-                                        ]
-                                      : [
-                                          const Color(0xFF4080A5),
-                                          const Color(0xFF8FCBFF),
-                                        ],
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
+                            Container(
+                              width: 300.0,
+                              height: 300.0,
+                              decoration: const BoxDecoration(
+                                color: Colors.white60,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                            center: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
+                            CircularPercentIndicator(
+                              radius: 150.0,
+                              lineWidth: 10.0,
+                              percent: soilMoisture / 100,
+                              animation: true,
+                              animationDuration: 500,
+                              animateFromLastPercent: true,
+                              circularStrokeCap: CircularStrokeCap.round,
+                              backgroundColor: Colors.grey[200]!,
+                              linearGradient: LinearGradient(
+                                colors: soilMoisture <= 20
+                                    ? [
+                                        const Color(0xFF8B4513),
+                                        const Color(0xFFD2B48C),
+                                      ]
+                                    : soilMoisture <= 40
+                                        ? [
+                                            const Color(0xFF40A578),
+                                            const Color(0xFFC8FF7B),
+                                          ]
+                                        : [
+                                            const Color(0xFF4080A5),
+                                            const Color(0xFF8FCBFF),
+                                          ],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                              ),
+                              center: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Kelembaban\n',
+                                          style: GoogleFonts.quicksand(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20.0,
+                                            color: soilMoisture <= 20
+                                                ? const Color(0xFF8B4513)
+                                                : soilMoisture <= 40
+                                                    ? const Color(0xFF40A578)
+                                                    : const Color(0xFF4080A5),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: 'Tanah',
+                                          style: GoogleFonts.quicksand(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20.0,
+                                            color: soilMoisture <= 20
+                                                ? const Color(0xFF8B4513)
+                                                : soilMoisture <= 40
+                                                    ? const Color(0xFF40A578)
+                                                    : const Color(0xFF4080A5),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    '${soilMoisture.toString()}%',
+                                    style: GoogleFonts.quicksand(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 96.0,
+                                      color: soilMoisture <= 20
+                                          ? const Color(0xFF8B4513)
+                                          : soilMoisture <= 40
+                                              ? const Color(0xFF40A578)
+                                              : const Color(0xFF4080A5),
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      TextSpan(
-                                        text: 'Kelembaban\n',
+                                      Text(
+                                        "Status Tanah",
                                         style: GoogleFonts.quicksand(
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 20.0,
+                                          fontSize: 14.0,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        soilMoisture <= 20
+                                            ? "Kering"
+                                            : soilMoisture <= 40
+                                                ? "Cukup"
+                                                : "Basah",
+                                        style: GoogleFonts.quicksand(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14.0,
                                           color: soilMoisture <= 20
                                               ? const Color(0xFF8B4513)
                                               : soilMoisture <= 40
                                                   ? const Color(0xFF40A578)
                                                   : const Color(0xFF4080A5),
                                         ),
-                                      ),
-                                      TextSpan(
-                                        text: 'Tanah',
-                                        style: GoogleFonts.quicksand(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 20.0,
-                                          color: soilMoisture <= 20
-                                              ? const Color(0xFF8B4513)
-                                              : soilMoisture <= 40
-                                                  ? const Color(0xFF40A578)
-                                                  : const Color(0xFF4080A5),
-                                        ),
-                                      ),
+                                      )
                                     ],
                                   ),
-                                ),
-                                Text(
-                                  '${soilMoisture.toString()}%',
-                                  style: GoogleFonts.quicksand(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 96.0,
-                                    color: soilMoisture <= 20
-                                        ? const Color(0xFF8B4513)
-                                        : soilMoisture <= 40
-                                            ? const Color(0xFF40A578)
-                                            : const Color(0xFF4080A5),
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Status Tanah",
-                                      style: GoogleFonts.quicksand(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.0,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      soilMoisture <= 20
-                                          ? "Kering"
-                                          : soilMoisture <= 40
-                                              ? "Cukup"
-                                              : "Basah",
-                                      style: GoogleFonts.quicksand(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.0,
-                                        color: soilMoisture <= 20
-                                            ? const Color(0xFF8B4513)
-                                            : soilMoisture <= 40
-                                                ? const Color(0xFF40A578)
-                                                : const Color(0xFF4080A5),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 175,
+                      child: GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                        ),
+                        children: <Widget>[
+                          MyCard(
+                            value: temperature.toString(),
+                            icon: FontAwesomeIcons.temperatureHalf,
+                            title: 'Suhu',
+                            headerColor: const Color(0xFF006769),
+                            valueColor: Colors.black,
+                            unit: "Celsius",
+                          ),
+                          MyCard(
+                            value: humidity.toString(),
+                            icon: FontAwesomeIcons.droplet,
+                            title: 'Kelembaban',
+                            headerColor: const Color(0xFF006769),
+                            valueColor: Colors.black,
+                            unit: "Percent",
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 175,
-                    child: GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 8.0,
-                      ),
-                      children: <Widget>[
-                        MyCard(
-                          value: temperature.toString(),
-                          icon: FontAwesomeIcons.temperatureHalf,
-                          title: 'Suhu',
-                          headerColor: const Color(0xFF006769),
-                          valueColor: Colors.black,
-                          unit: "Celsius",
-                        ),
-                        MyCard(
-                          value: humidity.toString(),
-                          icon: FontAwesomeIcons.droplet,
-                          title: 'Kelembaban',
-                          headerColor: const Color(0xFF006769),
-                          valueColor: Colors.black,
-                          unit: "Percent",
-                        ),
-                      ],
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTapDown: (details) async {
-                            await _databaseReference
-                                .child('control/pumpStatus')
-                                .set(true);
-                          },
-                          onTapUp: (details) async {
-                            await _databaseReference
-                                .child('control/pumpStatus')
-                                .set(false);
-                          },
-                          onTapCancel: () async {
-                            await _databaseReference
-                                .child('control/pumpStatus')
-                                .set(false);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: pumpStatus
-                                  ? const Color.fromARGB(255, 97, 97, 97)
-                                  : const Color(0xFF006769),
-                              borderRadius: BorderRadius.circular(10.0),
-                              boxShadow: pumpStatus
-                                  ? [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        offset: const Offset(0, 2),
-                                        blurRadius: 4.0,
-                                      ),
-                                    ]
-                                  : [],
-                            ),
-                            height: 60,
-                            alignment: Alignment.center,
-                            child: Text(
-                              pumpStatus
-                                  ? "Sedang Menyiram..."
-                                  : "Tekan untuk Menyiram",
-                              style: GoogleFonts.quicksand(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20.0,
-                                color: Colors.white,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTapDown: (details) async {
+                              await _databaseReference
+                                  .child('control/pumpStatus')
+                                  .set(true);
+                            },
+                            onTapUp: (details) async {
+                              await _databaseReference
+                                  .child('control/pumpStatus')
+                                  .set(false);
+                            },
+                            onTapCancel: () async {
+                              await _databaseReference
+                                  .child('control/pumpStatus')
+                                  .set(false);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: pumpStatus
+                                    ? const Color.fromARGB(255, 97, 97, 97)
+                                    : const Color(0xFF006769),
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: pumpStatus
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          offset: const Offset(0, 2),
+                                          blurRadius: 4.0,
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              height: 60,
+                              alignment: Alignment.center,
+                              child: Text(
+                                pumpStatus
+                                    ? "Sedang Menyiram..."
+                                    : "Tekan untuk Menyiram",
+                                style: GoogleFonts.quicksand(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20.0,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          statisticToggle();
-                        });
-                      },
-                      child: Text(
-                        'Lihat Statistik',
-                        style: GoogleFonts.quicksand(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: const Color(0xFF006769)),
-                      )),
-                ],
+                      ],
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            statisticToggle();
+                          });
+                        },
+                        child: Text(
+                          'Lihat Statistik',
+                          style: GoogleFonts.quicksand(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: const Color(0xFF006769)),
+                        )),
+                  ],
+                ),
               ),
             ),
           ),
