@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iot_app/screen/about_screen.dart';
+import 'package:iot_app/components/dialog.dart';
 import 'package:iot_app/components/card.dart';
 import 'package:iot_app/components/drawer.dart';
 import 'package:iot_app/components/stats_card.dart';
@@ -20,7 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final DraggableScrollableController _draggableController =
       DraggableScrollableController();
   final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
+  late final StreamSubscription<List<ConnectivityResult>>? subscription;
 
+  bool isInternetConnected = true;
   bool isExpanded = false;
   bool pumpStatus = false;
   int soilMoisture = 0;
@@ -31,6 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) async {
+      bool isConnected = await InternetConnectionChecker.instance.hasConnection;
+      if (!isConnected && isInternetConnected) {
+        showNoInternetDialog();
+      }
+
+      setState(() {
+        isInternetConnected = isConnected;
+      });
+    });
 
     _draggableController.addListener(() {
       setState(() {
@@ -88,10 +107,27 @@ class _HomeScreenState extends State<HomeScreen> {
     isBottomSheetAppear = !isBottomSheetAppear;
   }
 
+  void showNoInternetDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+        title: "Tidak Ada Koneksi Internet!",
+        description:
+            "Perangkat tidak terhubung ke internet. Silakan periksa jaringan internet kamu untuk berkomunikasi dengan sensor!",
+        buttonText: "Refresh",
+        image: Image.asset('images/no-internet-connection.png'),
+      ),
+    ).then((_) {
+      if (!isInternetConnected) {
+        showNoInternetDialog();
+      }
+    });
+  }
+
   @override
   void dispose() {
-    _draggableController
-        .removeListener(() {});
+    _draggableController.removeListener(() {});
+    subscription?.cancel();
     super.dispose();
   }
 
@@ -127,25 +163,35 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ShaderMask(
-                  shaderCallback: (bounds) => const LinearGradient(
-                    colors: [Color(0xFF006769), Color(0xFF40A578)],
-                    tileMode: TileMode.mirror,
-                  ).createShader(bounds),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const AboutScreen()),
-                        );
-                      },
-                      child: const Icon(
-                        FontAwesomeIcons.circleInfo,
-                        size: 18.0,
-                        color: Colors.white,
-                      ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 12.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidCircle,
+                          size: 12.0,
+                          color:
+                              isInternetConnected ? Colors.green : Colors.red,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          isInternetConnected ? "Terhubung" : "Terputus",
+                          style: GoogleFonts.quicksand(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                            color:
+                                isInternetConnected ? Colors.green : Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -162,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: GestureDetector(
                       onTap: () {},
                       child: const Icon(
-                        FontAwesomeIcons.volumeHigh,
+                        FontAwesomeIcons.solidBell,
                         size: 18.0,
                         color: Colors.white,
                       ),
@@ -276,7 +322,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "Status Tanah",
