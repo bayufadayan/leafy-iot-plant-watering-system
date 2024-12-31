@@ -141,16 +141,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 239, 250, 225),
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 32.0),
-          child: ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Color(0xFF006769), Color(0xFF40A578)],
-              tileMode: TileMode.mirror,
-            ).createShader(bounds),
-            child: IconButton(
-              onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-              icon: const Icon(
+        leading: GestureDetector(
+          onTap: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 32.0),
+            child: ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [Color(0xFF006769), Color(0xFF40A578)],
+                tileMode: TileMode.mirror,
+              ).createShader(bounds),
+              child: const Icon(
                 FontAwesomeIcons.bars,
                 size: 18.0,
                 color: Colors.white,
