@@ -11,6 +11,7 @@ import 'package:iot_app/components/stats_card.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -173,22 +174,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 8.0, horizontal: 12.0),
                     child: Row(
                       children: [
-                        Icon(
-                          FontAwesomeIcons.solidCircle,
-                          size: 12.0,
-                          color:
-                              isInternetConnected ? Colors.green : Colors.red,
-                        ),
+                        (pumpStatus
+                            ? Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.identity()..scale(-1.0, 1.0),
+                                child: Lottie.asset(
+                                  'images/watering_can.json',
+                                  width: 24,
+                                ),
+                              )
+                            : Icon(
+                                FontAwesomeIcons.solidCircle,
+                                size: 12.0,
+                                color: isInternetConnected
+                                    ? Colors.green
+                                    : Colors.red,
+                              )),
                         const SizedBox(
                           width: 4,
                         ),
                         Text(
-                          isInternetConnected ? "Terhubung" : "Terputus",
+                          isInternetConnected
+                              ? (pumpStatus ? "Pump Aktif" : "Terhubung")
+                              : "Terputus",
                           style: GoogleFonts.quicksand(
                             fontSize: 12.0,
                             fontWeight: FontWeight.bold,
-                            color:
-                                isInternetConnected ? Colors.green : Colors.red,
+                            color: isInternetConnected
+                                ? (pumpStatus ? Colors.blue : Colors.green)
+                                : Colors.red,
                           ),
                         ),
                       ],
@@ -354,6 +368,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
+                            if (pumpStatus)
+                              Lottie.asset('images/spark_blue.json'),
                           ],
                         ),
                       ),
