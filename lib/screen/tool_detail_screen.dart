@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/build_team_member.dart';
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+class ToolDeatilScreen extends StatelessWidget {
+  const ToolDeatilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Tim Pengembang',
+          'Alat dan Bahan',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -26,34 +26,16 @@ class AboutScreen extends StatelessWidget {
           ),
           children: [
             buildTeamMember(
-              title: 'M. Bayu Fadayan',
-              desc: '065121100',
+              title: 'Breadboard',
+              desc: 'xxxx',
               image: 'images/person.jpg',
-              showDesc: true,
+              showDesc: false,
             ),
             buildTeamMember(
-              title: 'Fathur P. Shodikin',
-              desc: '065121103',
+              title: 'Jumper',
+              desc: 'xxxx',
               image: 'images/person.jpg',
-              showDesc: true,
-            ),
-            buildTeamMember(
-              title: 'Rafly R. Amtiar',
-              desc: '065121107',
-              image: 'images/person.jpg',
-              showDesc: true,
-            ),
-            buildTeamMember(
-              title: 'Apriyan Fillah G',
-              desc: '065121109',
-              image: 'images/person.jpg',
-              showDesc: true,
-            ),
-            buildTeamMember(
-              title: 'Zidan Al Rasyid',
-              desc: '065121112',
-              image: 'images/person.jpg',
-              showDesc: true,
+              showDesc: false,
             ),
           ],
         ),

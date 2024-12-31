@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iot_app/screen/about_screen.dart';
+import 'package:iot_app/screen/tool_detail_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -56,22 +57,6 @@ class MyDrawer extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(
-                    FontAwesomeIcons.circleInfo,
-                    color: Colors.green,
-                  ),
-                  title: const Text(
-                    'Tentang Kami',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const AboutScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(
                     FontAwesomeIcons.chartArea,
                     color: Colors.green,
                   ),
@@ -79,7 +64,9 @@ class MyDrawer extends StatelessWidget {
                     'Statistik',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    
+                  },
                 ),
                 ListTile(
                   leading: const Icon(
@@ -98,10 +85,31 @@ class MyDrawer extends StatelessWidget {
                     color: Colors.green,
                   ),
                   title: const Text(
-                    'Tentang Alat',
+                    'Alat dan Bahan',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const ToolDeatilScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    FontAwesomeIcons.circleInfo,
+                    color: Colors.green,
+                  ),
+                  title: const Text(
+                    'Tentang Kami',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const AboutScreen()),
+                    );
+                  },
                 ),
               ],
             ),

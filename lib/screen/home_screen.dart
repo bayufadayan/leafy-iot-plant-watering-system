@@ -147,9 +147,9 @@ class _HomeScreenState extends State<HomeScreen> {
               colors: [Color(0xFF006769), Color(0xFF40A578)],
               tileMode: TileMode.mirror,
             ).createShader(bounds),
-            child: GestureDetector(
-              onTap: () => _scaffoldKey.currentState?.openDrawer(),
-              child: const Icon(
+            child: IconButton(
+              onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+              icon: const Icon(
                 FontAwesomeIcons.bars,
                 size: 18.0,
                 color: Colors.white,
