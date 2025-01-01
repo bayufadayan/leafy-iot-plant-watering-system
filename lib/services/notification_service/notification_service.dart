@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,6 +17,7 @@ class NotificationService {
   static late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   static late AndroidNotificationChannel channel;
   static bool isFlutterLocalNotificationsInitialized = false;
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
 
   initNotifications() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -23,6 +25,8 @@ class NotificationService {
     if (!kIsWeb) {
       await setupFlutterNotifications();
     }
+
+    await _saveFcmToken();
   }
 
   Future<String?> getToken() async {
@@ -32,6 +36,21 @@ class NotificationService {
 
     print("FCM Token: $token");
     return token;
+  }
+
+  Future<void> _saveFcmToken() async {
+    String? token = await getToken();
+    if (token != null) {
+      // Menyimpan token ke Firebase Realtime Database
+      // Misalnya menyimpan dengan path '/fcmTokens/{deviceId}'
+      // Anda bisa menggunakan userId atau deviceId yang unik
+      DatabaseReference tokenRef = _database.ref('/fcmTokens/$token');
+      await tokenRef.set({
+        'token': token,
+        'timestamp': ServerValue.timestamp,
+      });
+      print("FCM Token has been saved to Realtime Database");
+    }
   }
 
   Future<void> setupFlutterNotifications() async {
@@ -73,7 +92,7 @@ class NotificationService {
             channelDescription: channel.description,
             icon: 'notif_icon',
             priority: Priority.high,
-          importance: Importance.high,
+            importance: Importance.high,
           ),
         ),
       );

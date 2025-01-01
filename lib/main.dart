@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:iot_app/services/notification_service/notification_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:iot_app/services/firebase_notification.dart';
 
 void main() async {
@@ -15,13 +14,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // await FirebaseNotification().initNotifications();
+  // await FirebaseMessaging.instance.subscribeToTopic('alerts');
 
   if (await Permission.notification.request().isGranted) {
     await NotificationService().initNotifications();
     await NotificationService().getToken();
   }
 
-  await FirebaseMessaging.instance.subscribeToTopic('alerts');
 
   runApp(const MyApp());
 }
