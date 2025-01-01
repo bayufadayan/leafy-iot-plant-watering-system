@@ -3,13 +3,26 @@ import 'package:flutter/services.dart';
 import 'package:iot_app/screen/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:iot_app/services/notification_service/notification_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:iot_app/services/firebase_notification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // await FirebaseNotification().initNotifications();
+
+  if (await Permission.notification.request().isGranted) {
+    await NotificationService().initNotifications();
+    await NotificationService().getToken();
+  }
+
+  await FirebaseMessaging.instance.subscribeToTopic('alerts');
+
   runApp(const MyApp());
 }
 
