@@ -40,39 +40,48 @@ Widget buildTeamMember({
               colors: [
                 Color.fromRGBO(255, 255, 255, 0),
                 Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0.9),
+                Color.fromRGBO(255, 255, 255, 1),
               ],
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: showDesc ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
               children: [
+                if (showDesc)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(1),
+                      borderRadius:
+                          BorderRadius.circular(12.0),
+                    ),
+                    child: Text(
+                      "($desc)",
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow,
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 Text(
                   title,
                   style: GoogleFonts.quicksand(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                   softWrap: true,
                   overflow: TextOverflow.visible,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4.0),
-                if (showDesc)
-                  Text(
-                    desc,
-                    style: GoogleFonts.quicksand(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black54),
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                    textAlign: TextAlign.center,
-                  ),
               ],
             ),
           ),

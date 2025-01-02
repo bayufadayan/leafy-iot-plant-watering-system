@@ -17,7 +17,7 @@ class ToolDeatilScreen extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
         child: GridView(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -26,15 +26,75 @@ class ToolDeatilScreen extends StatelessWidget {
           ),
           children: [
             buildTeamMember(
-              title: 'Breadboard',
+              title: 'NodeMCU ESP8266',
               desc: 'xxxx',
-              image: 'images/person.jpg',
+              image: 'images/materials/esp8266.jpeg',
               showDesc: false,
             ),
             buildTeamMember(
-              title: 'Jumper',
+              title: 'Relay',
               desc: 'xxxx',
-              image: 'images/person.jpg',
+              image: 'images/materials/relay.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Mini DC Water Pump',
+              desc: 'xxxx',
+              image: 'images/materials/pump.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Soil Moisture Sensor',
+              desc: 'xxxx',
+              image: 'images/materials/soil.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'LCD 16x2 I2C',
+              desc: 'xxxx',
+              image: 'images/materials/lcd.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'DHT22',
+              desc: 'xxxx',
+              image: 'images/materials/dht22.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Breadboard',
+              desc: 'xxxx',
+              image: 'images/materials/breadboard.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Kabel Jumper',
+              desc: 'xxxx',
+              image: 'images/materials/jumper.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Baterai',
+              desc: 'xxxx',
+              image: 'images/materials/batre.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Arduino IDE',
+              desc: 'xxxx',
+              image: 'images/materials/arduino.jpeg',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Flutter',
+              desc: 'xxxx',
+              image: 'images/materials/flutter2.png',
+              showDesc: false,
+            ),
+            buildTeamMember(
+              title: 'Firebase',
+              desc: 'xxxx',
+              image: 'images/materials/firebase.jpeg',
               showDesc: false,
             ),
           ],

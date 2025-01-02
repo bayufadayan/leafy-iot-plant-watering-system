@@ -8,6 +8,7 @@ import 'package:iot_app/components/dialog.dart';
 import 'package:iot_app/components/card.dart';
 import 'package:iot_app/components/drawer.dart';
 import 'package:iot_app/components/stats_card.dart';
+import 'package:iot_app/screen/notification_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -181,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 alignment: Alignment.center,
                                 transform: Matrix4.identity()..scale(-1.0, 1.0),
                                 child: Lottie.asset(
-                                  'images/watering_can.json',
+                                  'images/lottie/watering_can.json',
                                   width: 24,
                                 ),
                               )
@@ -212,25 +213,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(
-                  width: 16.0,
+                  width: 0,
                 ),
-                ShaderMask(
-                  shaderCallback: (bounds) => const LinearGradient(
-                    colors: [Color(0xFF006769), Color(0xFF40A578)],
-                    tileMode: TileMode.mirror,
-                  ).createShader(bounds),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        FontAwesomeIcons.solidBell,
-                        size: 18.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const NotificationScreen()),
+                      );
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.solidBell,
+                      size: 18.0,
+                      color: Color(0xFF006769),
+                    ))
               ],
             ),
           ),
@@ -371,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             if (pumpStatus)
-                              Lottie.asset('images/spark_blue.json'),
+                              Lottie.asset('images/lottie/spark_blue.json'),
                           ],
                         ),
                       ),
