@@ -40,7 +40,7 @@ class AboutScreen extends StatelessWidget {
             buildTeamMember(
               title: 'Rafly R. Amtiar',
               desc: '065121107',
-              image: 'images/profiles/pli.jpg',
+              image: 'images/profiles/pli.jpeg',
               showDesc: true,
             ),
             buildTeamMember(

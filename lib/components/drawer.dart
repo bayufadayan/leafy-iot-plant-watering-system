@@ -1,26 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iot_app/components/features_on_progress.dart';
 import 'package:iot_app/screen/about_screen.dart';
 import 'package:iot_app/screen/tool_detail_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
-
-  void _launchURL() async {
-    const url =
-        'https://drive.google.com/drive/folders/1k73jeyQP4JaqgL_Cmw3LzPsQ3FkiOG2b?usp=sharing';
-    try {
-      final uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      print('Error launching URL: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +66,12 @@ class MyDrawer extends StatelessWidget {
                     'Statistik',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const FeaturesOnProgress());
+                  },
                 ),
                 ListTile(
                   leading: const Icon(
@@ -91,7 +82,12 @@ class MyDrawer extends StatelessWidget {
                     'Download Data',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const FeaturesOnProgress());
+                  },
                 ),
                 ListTile(
                   leading: const Icon(
@@ -135,7 +131,13 @@ class MyDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 16.0),
                   ),
                   onTap: () {
-                    _launchURL();
+                    launchUrl(
+                      Uri.https(
+                        "drive.google.com",
+                        "/drive/folders/1k73jeyQP4JaqgL_Cmw3LzPsQ3FkiOG2b",
+                        {"usp": "sharing"},
+                      ),
+                    );
                   },
                 ),
               ],

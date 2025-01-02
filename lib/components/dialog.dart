@@ -99,6 +99,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  elevation: 0,
                   padding: const EdgeInsets.symmetric(
                       horizontal: 24.0, vertical: 12.0),
                   shape: RoundedRectangleBorder(

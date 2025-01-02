@@ -21,7 +21,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         foregroundColor: Colors.white,
       ),
       body: const Padding(
-        padding: EdgeInsets.all(32),
+        padding: EdgeInsets.all(16),
+        child: Text("Data record notifikasi dalam pengembangan"),
       ),
     );
   }

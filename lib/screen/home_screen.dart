@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iot_app/components/dialog.dart';
 import 'package:iot_app/components/card.dart';
 import 'package:iot_app/components/drawer.dart';
+import 'package:iot_app/components/features_on_progress.dart';
 import 'package:iot_app/components/stats_card.dart';
 import 'package:iot_app/screen/notification_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -124,6 +125,12 @@ class _HomeScreenState extends State<HomeScreen> {
         showNoInternetDialog();
       }
     });
+  }
+
+  void showOnProgressDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => const FeaturesOnProgress());
   }
 
   @override
@@ -527,29 +534,44 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            const MyStatsCard(
-                              metricTitle: "Kelembaban Tanah",
-                              sensorName: "Soil Moisture Sensor",
-                              colorTitle: Color(0xFF693500),
-                              statsIllustration: 'images/chart 1.png',
+                            GestureDetector(
+                              onTap: () {
+                                showOnProgressDialog();
+                              },
+                              child: const MyStatsCard(
+                                metricTitle: "Kelembaban Tanah",
+                                sensorName: "Soil Moisture Sensor",
+                                colorTitle: Color(0xFF693500),
+                                statsIllustration: 'images/chart 1.png',
+                              ),
                             ),
                             const SizedBox(
                               height: 10.0,
                             ),
-                            const MyStatsCard(
-                              metricTitle: "Suhu",
-                              sensorName: "DHT22 Suhu",
-                              colorTitle: Color(0xFF2C3193),
-                              statsIllustration: 'images/chart 2.png',
+                            GestureDetector(
+                              onTap: () {
+                                showOnProgressDialog();
+                              },
+                              child: const MyStatsCard(
+                                metricTitle: "Suhu",
+                                sensorName: "DHT22 Suhu",
+                                colorTitle: Color(0xFF2C3193),
+                                statsIllustration: 'images/chart 2.png',
+                              ),
                             ),
                             const SizedBox(
                               height: 10.0,
                             ),
-                            const MyStatsCard(
-                              metricTitle: "Kelembaban Udara",
-                              sensorName: "DHT22 Kelembaban",
-                              colorTitle: Color(0xFF006769),
-                              statsIllustration: 'images/chart 3.png',
+                            GestureDetector(
+                              onTap: () {
+                                showOnProgressDialog();
+                              },
+                              child: const MyStatsCard(
+                                metricTitle: "Kelembaban Udara",
+                                sensorName: "DHT22 Kelembaban",
+                                colorTitle: Color(0xFF006769),
+                                statsIllustration: 'images/chart 3.png',
+                              ),
                             ),
                             const SizedBox(
                               height: 10.0,
